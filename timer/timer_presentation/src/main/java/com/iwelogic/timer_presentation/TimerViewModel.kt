@@ -19,6 +19,12 @@ class TimerViewModel @Inject constructor(private val timerUseCase: TimerUseCase)
     var uiState by mutableStateOf(TimerUiState(0, false))
         private set
 
+    init {
+        uiState = uiState.copy(
+            enableStatus = timerUseCase.isTimerActive()
+        )
+    }
+
     fun onEvent(event: TimerEvent) {
         when (event) {
             is TimerEvent.OnClickStart -> {
@@ -30,6 +36,7 @@ class TimerViewModel @Inject constructor(private val timerUseCase: TimerUseCase)
                     timerSeconds = 0,
                     enableStatus = false
                 )
+                timerUseCase.clearSavedTime()
                 timerJob?.cancel()
             }
             is TimerEvent.OnForegroundStop -> {
@@ -44,7 +51,7 @@ class TimerViewModel @Inject constructor(private val timerUseCase: TimerUseCase)
 
     private fun runTimer() {
         timerJob = viewModelScope.launch {
-            timerUseCase.getTimer(uiState.timerSeconds).collect {
+            timerUseCase.getTimer().collect {
                 uiState = uiState.copy(timerSeconds = it)
             }
         }

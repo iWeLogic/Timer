@@ -43,6 +43,7 @@ android {
 dependencies {
 
     implementation(project(Modules.timerPresentation))
+    implementation(project(Modules.timerData))
 
     implementation(Compose.ui)
     implementation(Compose.uiToolingPreview)

@@ -1,5 +1,6 @@
 package com.iwelogic.timer_presentation.di
 
+import com.iwelogic.timer_domain.repository.TimerRepository
 import com.iwelogic.timer_domain.use_case.TimerUseCase
 import com.iwelogic.timer_domain.use_case.TimerUseCaseImp
 import dagger.Module
@@ -12,7 +13,7 @@ import dagger.hilt.android.components.ViewModelComponent
 object TimerUseCaseModule {
 
     @Provides
-    fun provide(): TimerUseCase {
-        return TimerUseCaseImp()
+    fun provide(timerRepository: TimerRepository): TimerUseCase {
+        return TimerUseCaseImp(timerRepository)
     }
 }
